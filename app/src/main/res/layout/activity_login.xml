@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".LoginActivity">
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/progressBar2" android:layout_height="50dp"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/editTextId"
+            android:layout_marginTop="32dp" android:layout_below="@+id/progressBar2" android:hint="メールアドレス"
+            android:singleLine="true" android:selectAllOnFocus="true" android:textAlignment="center"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/editTextPass"
+            android:hint="パスワード"
+            android:singleLine="true" android:selectAllOnFocus="true" android:textAlignment="center"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_below="@+id/editTextId" android:inputType="textPassword"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/editTextUserName"
+            android:hint="表示名"
+            android:singleLine="true" android:selectAllOnFocus="true" android:textAlignment="center"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_below="@+id/editTextPass" android:inputType="textPersonName"/>
+    <Button
+            android:text="ログイン"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/buttonLogin" android:layout_marginTop="64dp"
+            android:layout_below="@+id/editTextUserName" android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+    <Button
+            android:text="アカウント作成"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/buttonResistory"
+            android:layout_below="@+id/buttonLogin" android:layout_marginRight="16dp" android:layout_marginLeft="16dp"/>
+</RelativeLayout>
