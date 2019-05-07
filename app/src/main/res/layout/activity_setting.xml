@@ -19,9 +19,11 @@
     <Button
             android:text="変更"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/buttonChange"/>
+            android:layout_height="wrap_content" android:id="@+id/buttonChange" android:background="@drawable/btn"
+            android:textColor="@color/colorButtonText"/>
     <Button
             android:text="ログアウト"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/buttonLogout"/>
+            android:layout_height="wrap_content" android:id="@+id/buttonLogout" android:background="@drawable/btn"
+            android:textColor="@color/colorButtonText" android:layout_marginTop="8dp"/>
 </LinearLayout>

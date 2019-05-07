@@ -5,16 +5,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        tools:context=".LoginActivity" android:padding="16dp">
 
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:singleLine="true" android:selectAllOnFocus="true" android:textAlignment="center">
+            android:singleLine="true" android:selectAllOnFocus="true" android:textAlignment="center"
+    >
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,12 +39,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:id="@+id/buttonLogin"/>
+                android:id="@+id/buttonLogin" android:background="@drawable/btn"
+                android:textColor="@color/colorButtonText"/>
         <Button
                 android:text="アカウント作成"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/buttonResister"/>
+                android:id="@+id/buttonResister" android:background="@drawable/btn"
+                android:textColor="@color/colorButtonText" android:layout_marginTop="8dp"/>
     </LinearLayout>
 
     <ProgressBar
