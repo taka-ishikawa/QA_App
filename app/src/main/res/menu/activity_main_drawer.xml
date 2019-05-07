@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group>
+        <item android:title="趣味" android:id="@+id/nav_hobby"/>
+        <item android:title="生活" android:id="@+id/nav_life"/>
+        <item android:title="健康" android:id="@+id/nav_health"/>
+        <item android:title="コンピュータ" android:id="@+id/nav_computer"/>
+    </group>
 </menu>
