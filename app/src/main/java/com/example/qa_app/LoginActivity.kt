@@ -1,14 +1,16 @@
 package com.example.qa_app
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -25,9 +27,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val email = editTextEmail.text.toString()
-        val password = editTextPass.text.toString()
-        val userName = editTextUserName.text.toString()
+        title = "ログイン"
+
+        lateinit var email: String
+        lateinit var password: String
+        lateinit var userName: String
 
         dataBaseReference = FirebaseDatabase.getInstance().reference
 
@@ -46,37 +50,90 @@ class LoginActivity : AppCompatActivity() {
 
         loginListener = OnCompleteListener { task ->
             if (task.isSuccessful) { // login successful
+                val userRef = dataBaseReference.child(UsersPATH).child(auth.currentUser!!.uid)
+
+                if (isCreateAccount) { // when  create account
+                    // save userName on Firebase
+                    val data = HashMap<String, String>() //HashMap<Key,Value>()
+                    data[NameKEY] = userName
+                    userRef.setValue(data)
+
+                    // save userName on Preference
+                    saveName(userName)
+                } else { // when login
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            // get data from Firebase
+                            val data = snapshot.value as Map<*,*>
+                            // save userName on Preference
+                            saveName(data[NameKEY] as String)
+                        }
+
+                        override fun onCancelled(firebaseError: DatabaseError) {
+                        }
+                    })
+                }
+
+                progressBar.visibility = View.GONE
+                finish()
 
             } else { // login false
-
+                val view = findViewById<View>(android.R.id.content)
+                Snackbar.make(view, "ログインに失敗しました", Snackbar.LENGTH_LONG).show()
+                progressBar.visibility = View.INVISIBLE
             }
         }
-
-        title = "ログイン"
 
         buttonResister.setOnClickListener {
             // close keyboard
-            if (email.length != 0 && password.length >= 6 && userName.length != 0) {
-                // raise the flag to reserve the user name when login
-            } else { // SnackBar: input error
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
+            email = editTextEmail.text.toString()
+            password = editTextPass.text.toString()
+            userName = editTextUserName.text.toString()
+            if (email.isNotEmpty() && password.length >= 6 && userName.isNotEmpty()) {
+                // raise the flag to reserve the user name when login
+                isCreateAccount = true
+                createAccount(email, password)
+            } else { // SnackBar: input error
+                Snackbar.make(it, "正しく入力してください", Snackbar.LENGTH_LONG).show()
             }
         }
+
         buttonLogin.setOnClickListener {
             // close keyboard
-            if (email.length != 0 && password.length >= 6 && userName.length != 0) {
-                // let down the flag
-            } else { // SnackBar: input error
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
+            email = editTextEmail.text.toString()
+            password = editTextPass.text.toString()
+            userName = editTextUserName.text.toString()
+            if (email.isNotEmpty() && password.length >= 6) {
+                // let down the flag
+                isCreateAccount = false
+                login(email, password)
+            } else { // SnackBar: input error
+                Snackbar.make(it, "正しく入力してください", Snackbar.LENGTH_LONG).show()
             }
         }
     }
 
-    fun createAccount() {
-        // create account, using .addOnCompleteListener(createAccountListener)
+    private fun createAccount(email: String, password: String) {
+        progressBar.visibility = View.VISIBLE
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(createAccountListener)
     }
 
-    fun login(email: String, password: String) {
-        // login, using .addOnCompleteListener(loginListener)
+    private fun login(email: String, password: String) {
+        progressBar.visibility = View.VISIBLE
+         auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(loginListener)
+    }
+
+    private fun saveName(userName: String) { // save userName on Preference
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = sharedPreferences.edit()
+        editor.putString(NameKEY, userName)
+        editor.commit()
     }
 }
