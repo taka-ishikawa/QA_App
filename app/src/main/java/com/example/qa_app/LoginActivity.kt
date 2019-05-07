@@ -13,27 +13,29 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mCreateAccountListener:OnCompleteListener<AuthResult>
-    private lateinit var mLoginListener: OnCompleteListener<AuthResult>
-    private lateinit var mDataBaseReference: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var createAccountListener:OnCompleteListener<AuthResult>
+    private lateinit var loginListener: OnCompleteListener<AuthResult>
+    private lateinit var dataBaseReference: DatabaseReference
 
     // アカウント作成時にフラグを立て、ログイン処理後に名前をFirebaseに保存する
-    private var mIsCreateAccount = false
+    private var isCreateAccount = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mDataBaseReference = FirebaseDatabase.getInstance().reference
+        val email = editTextEmail.text.toString()
+        val password = editTextPass.text.toString()
+        val userName = editTextUserName.text.toString()
+
+        dataBaseReference = FirebaseDatabase.getInstance().reference
 
         // FirebaseAuthのオブジェクトを取得する
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
-        mCreateAccountListener = OnCompleteListener { task ->
+        createAccountListener = OnCompleteListener { task ->
             if (task.isSuccessful) { // login
-                val email = editTextEmail.text.toString()
-                val password = editTextPass.text.toString()
                 login(email, password)
             } else { //display "error"
                 val view = findViewById<View>(android.R.id.content)
@@ -42,24 +44,39 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        mLoginListener = OnCompleteListener { task ->
-            if (task.isSuccessful) {
+        loginListener = OnCompleteListener { task ->
+            if (task.isSuccessful) { // login successful
 
-            } else {
+            } else { // login false
 
             }
         }
 
         title = "ログイン"
 
-        buttonLogin.setOnClickListener {
+        buttonResister.setOnClickListener {
+            // close keyboard
+            if (email.length != 0 && password.length >= 6 && userName.length != 0) {
+                // raise the flag to reserve the user name when login
+            } else { // SnackBar: input error
 
+            }
         }
-        buttonResister.setOnClickListener { }
+        buttonLogin.setOnClickListener {
+            // close keyboard
+            if (email.length != 0 && password.length >= 6 && userName.length != 0) {
+                // let down the flag
+            } else { // SnackBar: input error
+
+            }
+        }
     }
 
-    fun createAccount() { }
+    fun createAccount() {
+        // create account, using .addOnCompleteListener(createAccountListener)
+    }
 
-    fun login(email: String, password: String) { }
-
+    fun login(email: String, password: String) {
+        // login, using .addOnCompleteListener(loginListener)
+    }
 }
