@@ -19,6 +19,7 @@ class QuestionSendActivity : AppCompatActivity() {
 
             // send question: register genre/ newTitle/ newBody/ idNewImage with Firebase
 
+            finish()
         }
     }
 }
