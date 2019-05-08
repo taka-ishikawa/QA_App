@@ -130,7 +130,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveName(userName: String) { // save userName on Preference
-
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = sharedPreferences.edit()
         editor.putString(NameKEY, userName)

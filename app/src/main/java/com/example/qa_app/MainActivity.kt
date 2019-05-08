@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,9 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {
-                // need to change context: this
                 val intent = Intent(this, QuestionSendActivity::class.java)
-//                intent.putExtra()
+//                intent.putExtra("GenreIntentKEY", genre)
                 startActivity(intent)
             }
         }
@@ -43,10 +44,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener (this)
 
-        listView.setOnItemClickListener { _, _, _, _ ->
-            // need to change context: this
+        listView.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(this, QuestionDetailActivity::class.java)
-//            intent.putExtra()
+//            intent.putExtra(,view(?))
             startActivity(intent)
         }
     }
