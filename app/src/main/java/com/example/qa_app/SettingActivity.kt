@@ -37,7 +37,7 @@ class SettingActivity : AppCompatActivity() {
                 val dataBaseReference = FirebaseDatabase.getInstance().reference
                 val userRef = dataBaseReference.child(UsersPATH).child(User.uid)
                 val data = HashMap<String, String>()
-                data[UserNameKEY] = newUserName
+                data["userName"] = newUserName
                 userRef.setValue(data)
 
                 // change userName on Preference

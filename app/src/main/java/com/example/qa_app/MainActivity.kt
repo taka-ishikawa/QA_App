@@ -3,6 +3,7 @@ package com.example.qa_app
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -27,13 +28,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
+            if (genre == 0) {
+                Snackbar.make(it, "ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
+            }
+
             val user = FirebaseAuth.getInstance().currentUser
             if (user == null) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {
                 val intent = Intent(this, QuestionSendActivity::class.java)
-//                intent.putExtra("GenreIntentKEY", genre)
+                intent.putExtra("GenreIntentKEY", genre)
                 startActivity(intent)
             }
         }
@@ -94,4 +99,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+
+        // 1:趣味を既定の選択とする
+        if(genre == 0) {
+            onNavigationItemSelected(navigationView.menu.getItem(0))
+        }
+    }
+
 }
