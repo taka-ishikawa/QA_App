@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -56,7 +57,7 @@ class SettingActivity : AppCompatActivity() {
             editor.putString(NameKEY, "")
             editor.commit()
 
-            Snackbar.make(it, "ログアウトしました", Snackbar.LENGTH_LONG).show()
+            Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
 
             finish()
         }
