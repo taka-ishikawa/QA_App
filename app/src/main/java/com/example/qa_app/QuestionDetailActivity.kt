@@ -11,10 +11,10 @@ class QuestionDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_detail)
 
+        // extras idQuestion 的な
         fab.setOnClickListener {
-            // need to change context: this
             val intent = Intent(this, AnswerSendActivity::class.java)
-//            intent.putExtra()
+//            intent.putExtra( idQuestionIntentKEY,/*idQuestion的な*/)
             startActivity(intent)
         }
     }
