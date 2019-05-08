@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var createAccountListener:OnCompleteListener<AuthResult>
+    private lateinit var createAccountListener: OnCompleteListener<AuthResult>
     private lateinit var loginListener: OnCompleteListener<AuthResult>
     private lateinit var dataBaseReference: DatabaseReference
 
@@ -55,18 +55,18 @@ class LoginActivity : AppCompatActivity() {
                 if (isCreateAccount) { // when  create account
                     // save userName on Firebase
                     val data = HashMap<String, String>() //HashMap<Key,Value>()
-                    data[NameKEY] = userName
+                    data[UserNameKEY] = userName
                     userRef.setValue(data)
 
                     // save userName on Preference
                     saveName(userName)
                 } else { // when login
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             // get data from Firebase
-                            val data = snapshot.value as Map<*,*>
+                            val data = snapshot.value as Map<*, *>
                             // save userName on Preference
-                            saveName(data[NameKEY] as String)
+                            saveName(data[UserNameKEY] as String)
                         }
 
                         override fun onCancelled(firebaseError: DatabaseError) {
@@ -126,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(email: String, password: String) {
         progressBar.visibility = View.VISIBLE
-         auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(loginListener)
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(loginListener)
     }
 
     private fun saveName(userName: String) { // save userName on Preference
