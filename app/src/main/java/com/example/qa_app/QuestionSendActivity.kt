@@ -10,6 +10,8 @@ class QuestionSendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_send)
 
+        title = "質問作成"
+
         val genre = intent.extras!!["GenreIntentKEY"]!!.toString().toInt()
 
         buttonSend.setOnClickListener {

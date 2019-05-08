@@ -11,6 +11,9 @@ class QuestionDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_detail)
 
+//        val titleQuestion = ""
+//        title = titleQuestion
+
         // extras idQuestion 的な
         fab.setOnClickListener {
             val intent = Intent(this, AnswerSendActivity::class.java)

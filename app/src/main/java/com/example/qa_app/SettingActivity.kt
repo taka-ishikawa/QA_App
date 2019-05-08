@@ -10,6 +10,8 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        title = "設定"
+
         buttonChange.setOnClickListener {
             val userName = editTextUserName.text.toString()
 

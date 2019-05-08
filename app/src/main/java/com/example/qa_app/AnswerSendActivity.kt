@@ -10,6 +10,8 @@ class AnswerSendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_answer_send)
 
+        title = "回答作成"
+
         // extras idQuestion 的な
         buttonSend.setOnClickListener {
             val answerBody = editTextAnswer.text.toString()
