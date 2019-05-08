@@ -7,6 +7,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -60,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
                     // save userName on Preference
                     saveName(userName)
+                    Toast.makeText(this, "アカウントを登録しました", Toast.LENGTH_SHORT).show()
                 } else { // when login
                     userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -72,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
                         override fun onCancelled(firebaseError: DatabaseError) {
                         }
                     })
+                    Toast.makeText(this, "ログインしました", Toast.LENGTH_SHORT).show()
                 }
 
                 progressBar.visibility = View.GONE

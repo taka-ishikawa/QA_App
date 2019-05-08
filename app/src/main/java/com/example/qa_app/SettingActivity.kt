@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_setting.*
-import java.util.jar.Attributes
 
 class SettingActivity : AppCompatActivity() {
 
