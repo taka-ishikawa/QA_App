@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
                 if (isCreateAccount) { // when  create account
                     // save userName on Firebase
                     val data = HashMap<String, String>() //HashMap<Key,Value>()
-                    data[UserNameKEY] = userName
+                    data["userName"] = userName
                     userRef.setValue(data)
 
                     // save userName on Preference
@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
                             // get data from Firebase
                             val data = snapshot.value as Map<*, *>
                             // save userName on Preference
-                            saveName(data[UserNameKEY] as String)
+                            saveName(data["userName"] as String)
                         }
 
                         override fun onCancelled(firebaseError: DatabaseError) {
