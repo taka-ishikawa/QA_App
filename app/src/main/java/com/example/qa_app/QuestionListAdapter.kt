@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 class QuestionListAdapter(context: Context): BaseAdapter() {
-    val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var questionArrayList = ArrayList<Question>()
 
     override fun getCount(): Int {
