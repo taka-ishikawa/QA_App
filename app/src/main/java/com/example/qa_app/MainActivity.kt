@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         listView.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(this, QuestionDetailActivity::class.java)
-//            intent.putExtra(,view(?))
+            intent.putExtra(QuestionIntentKEY, questionArrayList[i])
             startActivity(intent)
         }
     }
