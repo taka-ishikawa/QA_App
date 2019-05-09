@@ -16,18 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/editTextAnswer" android:inputType="textImeMultiLine"
+            android:id="@+id/editTextBody" android:inputType="textImeMultiLine"
             android:layout_below="@+id/textView3" android:layout_alignParentStart="true"/>
     <Button
             android:text="投稿"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/buttonSend"
-            android:layout_below="@+id/editTextAnswer" android:layout_alignParentStart="true"
+            android:layout_below="@+id/editTextBody" android:layout_alignParentStart="true"
             android:background="@drawable/btn"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar2" android:layout_below="@+id/buttonSend"
+            android:id="@+id/progressBar" android:layout_below="@+id/buttonSend"
             android:layout_centerHorizontal="true" android:visibility="gone"/>
 </RelativeLayout>

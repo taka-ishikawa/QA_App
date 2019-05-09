@@ -20,7 +20,7 @@ class SettingActivity : AppCompatActivity() {
 
         // editTextUserName.setText(userName)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val userName = sharedPreferences.getString(NameKEY, "")
+        val userName = sharedPreferences.getString(UserNameKEY, "")
         editTextUserName.setText(userName)
 
         buttonChange.setOnClickListener {
@@ -42,7 +42,7 @@ class SettingActivity : AppCompatActivity() {
 
                 // change userName on Preference
                 val editor = sharedPreferences.edit()
-                editor.putString(NameKEY, newUserName)
+                editor.putString(UserNameKEY, newUserName)
                 editor.commit()
 
                 Snackbar.make(it, "表示名を変更しました", Snackbar.LENGTH_LONG).show()
@@ -53,7 +53,7 @@ class SettingActivity : AppCompatActivity() {
             // call logout.　(FirebaseAuth.getInstance() = auth in LoginActivity.kt)
             FirebaseAuth.getInstance().signOut()
             val editor = sharedPreferences.edit()
-            editor.putString(NameKEY, "")
+            editor.putString(UserNameKEY, "")
             editor.commit()
 
             Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()

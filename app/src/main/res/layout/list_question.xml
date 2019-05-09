@@ -14,7 +14,7 @@
             android:layout_height="50dp" android:id="@+id/textViewTitle"
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="true" android:layout_toEndOf="@+id/imageViewQuestion"
-            android:textSize="24sp" android:text="Title" android:textStyle="bold"/>
+            android:textSize="24sp" android:text="Title" android:textStyle="bold" android:layout_marginLeft="10dp"/>
     <TextView
             android:text="name"
             android:layout_width="wrap_content"
@@ -28,5 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textViewRes" android:layout_alignParentStart="false"
             android:layout_alignParentTop="false"
-            android:layout_toEndOf="@+id/imageViewQuestion" android:layout_below="@+id/textViewTitle"/>
+            android:layout_toEndOf="@+id/imageViewQuestion" android:layout_below="@+id/textViewTitle"
+            android:layout_marginLeft="10dp"/>
 </RelativeLayout>

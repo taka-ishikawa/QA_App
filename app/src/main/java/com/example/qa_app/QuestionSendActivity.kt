@@ -104,7 +104,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
 
             // get name from Preference
             val sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
-            val userName = sharedPreference.getString(NameKEY, "")!!.toString()
+            val userName = sharedPreference.getString(UserNameKEY, "")!!.toString()
             data["userName"] = userName
 
             // as? ?: for safety. if imageView is not set, return null

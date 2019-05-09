@@ -10,8 +10,9 @@
     <TextView
             android:text="New Text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textViewBody" android:layout_toEndOf="@+id/imageViewQuestionDetail"
-            android:layout_alignParentTop="true"/>
+            android:layout_height="wrap_content" android:id="@+id/textViewBody"
+            android:layout_toEndOf="@+id/imageViewQuestionDetail"
+            android:layout_alignParentTop="true" android:layout_marginLeft="10dp"/>
     <TextView
             android:text="Small Text"
             android:layout_width="wrap_content"

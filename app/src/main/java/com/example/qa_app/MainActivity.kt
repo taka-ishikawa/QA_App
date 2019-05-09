@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener (this)
 
-        listView.setOnItemClickListener { adapterView, view, i, l ->
+        listView.setOnItemClickListener { _, _, i, _ ->
             val intent = Intent(this, QuestionDetailActivity::class.java)
             intent.putExtra(QuestionIntentKEY, questionArrayList[i])
             startActivity(intent)

@@ -49,7 +49,6 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         override fun onChildRemoved(p0: DataSnapshot) {
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +56,7 @@ class QuestionDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_question_detail)
 
         // extras idQuestion 的な
-        question = intent.extras.get(QuestionIntentKEY) as Question
+        question = intent.extras!!.get(QuestionIntentKEY) as Question
 
         title = question.title
 

@@ -30,6 +30,10 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
         }
     }
 
+    override fun getViewTypeCount(): Int {
+        return 2 // ?
+    }
+
     override fun getCount(): Int {
         return 1 + question.answers.size
     }
