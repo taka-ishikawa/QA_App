@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
+            val g = genre
             if (genre == 0) {
                 Snackbar.make(it, "ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
             }
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             } else {
                 val intent = Intent(this, QuestionSendActivity::class.java)
-                intent.putExtra("GenreIntentKEY", genre)
+                intent.putExtra(GenreIntentKEY, genre)
                 startActivity(intent)
             }
         }
