@@ -19,6 +19,7 @@ import android.support.design.widget.Snackbar
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -44,6 +45,8 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
 
         genre = intent.extras!!.getInt(GenreIntentKEY)
 
+        buttonSend.isEnabled = true
+
         buttonSend.setOnClickListener(this)
         imageView.setOnClickListener(this)
     }
@@ -66,6 +69,8 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
                 showChooser()
 
         } else if (v == buttonSend) {
+            progressBar.visibility = View.VISIBLE
+            buttonSend.isEnabled = false
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
@@ -81,14 +86,19 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
             val body = editTextBody.text.toString()
 
             if (titleQuestion.isEmpty()) {
-                Snackbar.make(v, "タイトルを入力してくだいさい", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "タイトルを入力してください", Snackbar.LENGTH_LONG).show()
+                buttonSend.isEnabled = true
+                progressBar.visibility = View.INVISIBLE
                 return
             }
 
             if (body.isEmpty()) {
                 Snackbar.make(v, "質問内容を入力してください", Snackbar.LENGTH_LONG).show()
+                buttonSend.isEnabled = true
+                progressBar.visibility = View.INVISIBLE
                 return
             }
+
             data["title"] = titleQuestion
             data["body"] = body
 
@@ -106,19 +116,18 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
                 val bitmapString = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
                 data["image"] = bitmapString
 
-            } else { // dialog "画像が添付されていません。このまま投稿しますか？"　的な
+            } else { // dialog "画像が添付されていません。このまま投稿しますか？"　的な y->break, n->return
 
             }
 
             // send question: register genre/ newTitle/ newBody/ idNewImage with Firebase
             genreRef.push().setValue(data, this)
-//            data:
-//            data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
-//            data["title"] = titleQuestion
-//            data["body"] = body
-//            data["userName"] = userName
-//            data["image"] = bitmapString
-
+//                data:
+//                data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
+//                data["title"] = titleQuestion
+//                data["body"] = body
+//                data["userName"] = userName
+//                data["image"] = bitmapString
             progressBar.visibility = View.INVISIBLE
         }
     }
@@ -202,6 +211,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
         progressBar.visibility = View.GONE
 
         if (databaseError == null) {
+            Toast.makeText(this, "投稿しました", Toast.LENGTH_SHORT).show()
             finish()
         } else {
             Snackbar.make(findViewById(android.R.id.content), "投稿に失敗しました", Snackbar.LENGTH_LONG).show()
