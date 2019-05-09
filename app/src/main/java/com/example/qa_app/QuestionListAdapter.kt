@@ -12,7 +12,7 @@ import android.widget.TextView
 
 class QuestionListAdapter(context: Context): BaseAdapter() {
     val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    var questionArrayList = ArrayList<Question>()
+    private var questionArrayList = ArrayList<Question>()
 
     override fun getCount(): Int {
         return questionArrayList.size
@@ -51,5 +51,7 @@ class QuestionListAdapter(context: Context): BaseAdapter() {
         return  convertView
     }
 
-
+    fun setQuestionArrayList(questionArrayList: ArrayList<Question>) {
+        this.questionArrayList = questionArrayList
+    }
 }
