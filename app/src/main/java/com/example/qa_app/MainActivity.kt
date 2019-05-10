@@ -113,7 +113,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         questionListAdapter.notifyDataSetChanged()
 
         fab.setOnClickListener {
-            val g = genre
             if (genre == 0) {
                 Snackbar.make(it, "ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
             }
