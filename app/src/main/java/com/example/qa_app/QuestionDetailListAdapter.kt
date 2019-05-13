@@ -3,6 +3,7 @@ package com.example.qa_app
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class QuestionDetailListAdapter(context: Context, private val question: Question) : BaseAdapter() {
@@ -70,22 +72,31 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
                 imageViewQuestionDetail.setImageBitmap(image)
             }
 
-
             val toggleButtonFav = convertView.findViewById<View>(R.id.toggleButtonFav) as ToggleButton
-            var favStatus: Int? = null
-            toggleButtonFav.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    toggleButtonFav.setBackgroundResource(R.drawable.ic_star_24dp)
-                    favStatus = FavoriteSTATUS
-                } else {
-                    toggleButtonFav.setBackgroundResource(R.drawable.ic_star_border_24dp)
-                    favStatus = null
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
+                toggleButtonFav.visibility = View.INVISIBLE
+            } else { //TODO(if favorite -> star, not favorite -> star_border)
+                toggleButtonFav.visibility = View.VISIBLE
+                val favoriteRef = FirebaseDatabase.getInstance().reference.child(FavoritePATH).child(currentUser.uid)
+                val data = HashMap<String, String>()
+                data["questionUid"] = question.questionUid
+                data["genre"] = question.genre.toString()
+
+                toggleButtonFav.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        toggleButtonFav.setBackgroundResource(R.drawable.ic_star_24dp)
+                        favoriteRef.push().setValue(data)
+                    } else {
+                        toggleButtonFav.setBackgroundResource(R.drawable.ic_star_border_24dp)
+                        //TODO delete questionUid
+                    }
                 }
             }
 
         } else if (getItemViewType(position) == TYPE_ANSWER) {
             if (convertView == null) {
-                convertView = layoutInflater!!.inflate(R.layout.list_question_detail, parent, false)!!
+                convertView = layoutInflater!!.inflate(R.layout.list_answer, parent, false)!!
             }
 
             val textViewBody = convertView.findViewById<View>(R.id.textViewBody) as TextView

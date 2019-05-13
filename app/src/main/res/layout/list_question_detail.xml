@@ -26,5 +26,6 @@
             android:background="@drawable/ic_star_border_24dp"
             android:layout_alignParentBottom="true" android:layout_alignParentRight="false"
             android:layout_alignParentEnd="true"
-            android:textOff=" " android:textOn=" "/>
+            android:textOff=" " android:textOn=" "
+            android:editable="false"/>
 </RelativeLayout>

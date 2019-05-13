@@ -117,8 +117,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Snackbar.make(it, "ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
             }
 
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user == null) {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {

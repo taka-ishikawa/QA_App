@@ -20,9 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp" android:id="@+id/textViewUserName"
             android:layout_alignParentTop="false" android:layout_marginTop="8dp"
-            android:layout_below="@+id/textViewTitle" android:layout_alignParentRight="false"
-            android:layout_marginRight="8dp" android:layout_toStartOf="@+id/toggleButtonFav"
-    />
+            android:layout_below="@+id/textViewTitle" android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"/>
+            <!--android:layout_toStartOf="@+id/toggleButtonFav"-->
     <TextView
             android:text="New Text"
             android:layout_width="wrap_content"
@@ -30,12 +30,12 @@
             android:layout_alignParentTop="false"
             android:layout_toEndOf="@+id/imageViewQuestion" android:layout_below="@+id/textViewTitle"
             android:layout_marginLeft="10dp"/>
-    <ToggleButton
-            android:layout_width="24dp"
-            android:layout_height="24dp" android:id="@+id/toggleButtonFav"
-            android:background="@drawable/ic_star_border_24dp"
-            android:layout_alignParentBottom="false" android:layout_alignParentRight="false"
-            android:layout_alignParentEnd="true" android:layout_marginEnd="8dp" android:layout_marginTop="5dp"
-            android:layout_below="@+id/textViewTitle"
-            android:textOff=" " android:textOn=" "/>
+    <!--<ToggleButton-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp" android:id="@+id/toggleButtonFav"-->
+            <!--android:background="@drawable/ic_star_border_24dp"-->
+            <!--android:layout_alignParentBottom="false" android:layout_alignParentRight="false"-->
+            <!--android:layout_alignParentEnd="true" android:layout_marginEnd="8dp" android:layout_marginTop="5dp"-->
+            <!--android:layout_below="@+id/textViewTitle"-->
+            <!--android:textOff=" " android:textOn=" "/>-->
 </RelativeLayout>
