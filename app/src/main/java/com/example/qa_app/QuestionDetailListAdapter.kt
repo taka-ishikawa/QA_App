@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class QuestionDetailListAdapter(context: Context, private val question: Question) : BaseAdapter() {
     companion object {
@@ -66,6 +69,20 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
                 val imageViewQuestionDetail = convertView.findViewById<View>(R.id.imageViewQuestionDetail) as ImageView
                 imageViewQuestionDetail.setImageBitmap(image)
             }
+
+
+            val toggleButtonFav = convertView.findViewById<View>(R.id.toggleButtonFav) as ToggleButton
+            var favStatus: Int? = null
+            toggleButtonFav.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    toggleButtonFav.setBackgroundResource(R.drawable.ic_star_24dp)
+                    favStatus = FavoriteSTATUS
+                } else {
+                    toggleButtonFav.setBackgroundResource(R.drawable.ic_star_border_24dp)
+                    favStatus = null
+                }
+            }
+
         } else if (getItemViewType(position) == TYPE_ANSWER) {
             if (convertView == null) {
                 convertView = layoutInflater!!.inflate(R.layout.list_question_detail, parent, false)!!
