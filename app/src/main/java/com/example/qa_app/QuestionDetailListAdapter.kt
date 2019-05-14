@@ -77,19 +77,20 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
             if (currentUser == null) {
                 toggleButtonFav.visibility = View.INVISIBLE
             } else { //TODO(if favorite -> star, not favorite -> star_border)
+                //　わからんこと：　favoriteRefに登録されているかを確認する方法
+                // こう言うValueを持つparent を探す方法
                 toggleButtonFav.visibility = View.VISIBLE
-                val favoriteRef = FirebaseDatabase.getInstance().reference.child(FavoritePATH).child(currentUser.uid)
+                val favoriteRef = FirebaseDatabase.getInstance().reference.child(FavoritePATH).child(currentUser.uid).child(question.questionUid)
                 val data = HashMap<String, String>()
-                data["questionUid"] = question.questionUid
                 data["genre"] = question.genre.toString()
 
                 toggleButtonFav.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         toggleButtonFav.setBackgroundResource(R.drawable.ic_star_24dp)
-                        favoriteRef.push().setValue(data)
+                        favoriteRef.setValue(data)
                     } else {
                         toggleButtonFav.setBackgroundResource(R.drawable.ic_star_border_24dp)
-                        //TODO delete questionUid
+                        favoriteRef.removeValue()
                     }
                 }
             }

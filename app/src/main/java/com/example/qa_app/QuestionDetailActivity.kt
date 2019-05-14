@@ -4,16 +4,16 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_question_detail.*
 
 class QuestionDetailActivity : AppCompatActivity() {
 
     private lateinit var question: Question
     private lateinit var questionDetailListAdapter: QuestionDetailListAdapter
+
+    private var currentUser: FirebaseUser? = null
 
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(p0: DataSnapshot, p1: String?) { // question.answer.add(answer)
@@ -35,6 +35,9 @@ class QuestionDetailActivity : AppCompatActivity() {
 
             val answer = Answer(body, userName, uid, answerUid)
             question.answers.add(answer)
+
+
+
             questionDetailListAdapter.notifyDataSetChanged()
         }
 
@@ -65,10 +68,10 @@ class QuestionDetailActivity : AppCompatActivity() {
         listView.adapter = questionDetailListAdapter
         questionDetailListAdapter.notifyDataSetChanged()
 
+        currentUser = FirebaseAuth.getInstance().currentUser
         fab.setOnClickListener {
-            val user = FirebaseAuth.getInstance().currentUser
 
-            if (user == null) { // ログインしてない
+            if (currentUser == null) { // ログインしてない
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else { // ログインしてる
@@ -81,5 +84,8 @@ class QuestionDetailActivity : AppCompatActivity() {
         val databaseReference = FirebaseDatabase.getInstance().reference
         val answerRef = databaseReference.child(ContentsPATH).child(question.questionUid).child(AnswersPATH)
         answerRef.addChildEventListener(childEventListener)
+
+//        val favoriteRef = databaseReference.child(FavoritePATH).child(currentUser!!.uid)
+//        favoriteRef.addChildEventListener(childEventListener)
     }
 }
