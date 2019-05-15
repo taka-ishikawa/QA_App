@@ -64,8 +64,6 @@ class QuestionDetailActivity : AppCompatActivity() {
             Log.d("value", "favoriteMap?.keys: ${favoriteMap?.keys}")
             Log.d("value", "questionUid: ${question.questionUid}")
 
-            //TODO(if favorite -> star, not favorite -> star_border)
-            // わからんこと：　favoriteRefに登録されているかを確認する方法
             toggleButtonFav.visibility = View.VISIBLE
             val favoriteRef = FirebaseDatabase.getInstance().reference
                 .child(FavoritePATH).child(currentUser!!.uid).child(question.questionUid)

@@ -7,11 +7,14 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.View.INVISIBLE
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var questionListAdapter: QuestionListAdapter
 
     private var genreRef: DatabaseReference ?= null
+
+    private var currentUser: FirebaseUser? = null
 
     private val childEventLister = object : ChildEventListener {
         override fun onChildAdded(p0: DataSnapshot, p1: String?) { // when question added
@@ -117,7 +122,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Snackbar.make(it, "ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
             }
 
-            val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser == null) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
@@ -145,6 +149,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(genre == 0) {
             onNavigationItemSelected(navigationView.menu.getItem(0))
         }
+
+        currentUser = FirebaseAuth.getInstance().currentUser
+        navigationView.menu.findItem(R.id.nav_favorite).isVisible = (currentUser != null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -183,6 +190,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_computer -> {
                 toolbar.title = "コンピューター"
                 genre = 4
+            }
+            R.id.nav_favorite -> {
+
             }
         }
 
