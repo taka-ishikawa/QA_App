@@ -59,7 +59,10 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         override fun onDataChange(p0: DataSnapshot) {
             val favoriteMap = p0.value as Map<*, *>?
-            Log.d("value", favoriteMap.toString())
+
+            Log.d("value", "favoriteMap: $favoriteMap")
+            Log.d("value", "favoriteMap?.keys: ${favoriteMap?.keys}")
+            Log.d("value", "questionUid: ${question.questionUid}")
 
             //TODO(if favorite -> star, not favorite -> star_border)
             // わからんこと：　favoriteRefに登録されているかを確認する方法
@@ -67,17 +70,16 @@ class QuestionDetailActivity : AppCompatActivity() {
             val favoriteRef = FirebaseDatabase.getInstance().reference
                 .child(FavoritePATH).child(currentUser!!.uid).child(question.questionUid)
 
-//                val databese = favoriteRef.database
-//                val key = favoriteRef.key
-//                var parent = favoriteRef.parent
-//                val root = favoriteRef.root
-
-            Log.d("value", "in QDLAdapter: $favoriteMap")
-            if (favoriteMap == null) { // NOT favorite
+            if (favoriteMap == null || !favoriteMap.containsKey(question.questionUid)) {
                 toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_off)
-            } else { // favorite
-                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star)
+            } else {
+                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_on)
             }
+//            if (favoriteMap?.keys?.contains(question.questionUid)) { // favorite
+//                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_on)
+//            } else { // NOT favorite
+//                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_off)
+//            }
 
             val data = HashMap<String, String>()
             data["genre"] = question.genre.toString()

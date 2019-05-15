@@ -6,5 +6,7 @@
         <item android:title="生活" android:id="@+id/nav_life"/>
         <item android:title="健康" android:id="@+id/nav_health"/>
         <item android:title="コンピュータ" android:id="@+id/nav_computer"/>
+        <item android:title="" android:id="@+id/nav_nothing"/>
+        <item android:title="お気に入り質問一覧" android:id="@+id/nav_favorite"/>
     </group>
 </menu>
