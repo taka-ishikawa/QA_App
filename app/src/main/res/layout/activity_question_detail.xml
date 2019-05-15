@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".QuestionDetailActivity" android:padding="16dp">
-
-    <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/listView" android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
-    </ListView>
-
+        android:layout_height="match_parent">
+    <ToggleButton
+            android:layout_width="36dp"
+            android:layout_height="44dp"
+            android:id="@+id/toggleButtonFav"
+            android:textOff=" "
+            android:textOn=" "
+            android:background="@android:drawable/btn_star_big_off"
+            android:layout_gravity="end"
+            android:layout_margin="8dp"/>
+    <include android:layout_width="wrap_content" android:layout_height="wrap_content"
+             layout="@layout/content_questiondetail" android:layout_marginTop="56dp"/>
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" android:id="@+id/fab"
-            android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:src="@drawable/plus"/>
-</RelativeLayout>
+            android:clickable="true" app:srcCompat="@drawable/plus" android:id="@+id/fab"
+            android:layout_gravity="bottom|end" android:layout_margin="16dp"/>
+</android.support.design.widget.CoordinatorLayout>

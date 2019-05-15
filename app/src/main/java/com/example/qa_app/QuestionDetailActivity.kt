@@ -3,10 +3,13 @@ package com.example.qa_app
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_question_detail.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class QuestionDetailActivity : AppCompatActivity() {
 
@@ -22,7 +25,7 @@ class QuestionDetailActivity : AppCompatActivity() {
             val answerUid = p0.key ?: ""
 
             for (answer in question.answers) {
-                // 同じAnswerUidのものが存在しているときは何もしない ？？存在するん？？
+                // 同じAnswerUidのものが存在しているときは何もしない
                 if (answerUid == answer.answerUid) {
                     return
                 }
@@ -35,8 +38,6 @@ class QuestionDetailActivity : AppCompatActivity() {
 
             val answer = Answer(body, userName, uid, answerUid)
             question.answers.add(answer)
-
-
 
             questionDetailListAdapter.notifyDataSetChanged()
         }
@@ -54,6 +55,50 @@ class QuestionDetailActivity : AppCompatActivity() {
         }
     }
 
+    private val valueEventListener = (object : ValueEventListener {
+
+        override fun onDataChange(p0: DataSnapshot) {
+            val favoriteMap = p0.value as Map<*, *>?
+            Log.d("value", favoriteMap.toString())
+
+            //TODO(if favorite -> star, not favorite -> star_border)
+            // わからんこと：　favoriteRefに登録されているかを確認する方法
+            toggleButtonFav.visibility = View.VISIBLE
+            val favoriteRef = FirebaseDatabase.getInstance().reference
+                .child(FavoritePATH).child(currentUser!!.uid).child(question.questionUid)
+
+//                val databese = favoriteRef.database
+//                val key = favoriteRef.key
+//                var parent = favoriteRef.parent
+//                val root = favoriteRef.root
+
+            Log.d("value", "in QDLAdapter: $favoriteMap")
+            if (favoriteMap == null) { // NOT favorite
+                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_off)
+            } else { // favorite
+                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star)
+            }
+
+            val data = HashMap<String, String>()
+            data["genre"] = question.genre.toString()
+
+            toggleButtonFav.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    favoriteRef.setValue(data)
+                } else {
+                    favoriteRef.removeValue()
+                }
+//                +α オフライン機能
+//                favoriteRef.onDisconnect()
+            }
+            questionDetailListAdapter.notifyDataSetChanged()
+        }
+
+        override fun onCancelled(p0: DatabaseError) {
+
+        }
+    })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_detail)
@@ -63,12 +108,22 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         title = question.title
 
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        val answerRef = databaseReference.child(ContentsPATH).child(question.questionUid).child(AnswersPATH)
+        answerRef.addChildEventListener(childEventListener)
+
+        currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val favoriteRef = databaseReference.child(FavoritePATH).child(currentUser!!.uid)
+            favoriteRef.addValueEventListener(valueEventListener)
+        }
+
         // setting of listView
+
         questionDetailListAdapter = QuestionDetailListAdapter(this, question)
         listView.adapter = questionDetailListAdapter
         questionDetailListAdapter.notifyDataSetChanged()
 
-        currentUser = FirebaseAuth.getInstance().currentUser
         fab.setOnClickListener {
 
             if (currentUser == null) { // ログインしてない
@@ -80,12 +135,5 @@ class QuestionDetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
-        val databaseReference = FirebaseDatabase.getInstance().reference
-        val answerRef = databaseReference.child(ContentsPATH).child(question.questionUid).child(AnswersPATH)
-        answerRef.addChildEventListener(childEventListener)
-
-//        val favoriteRef = databaseReference.child(FavoritePATH).child(currentUser!!.uid)
-//        favoriteRef.addChildEventListener(childEventListener)
     }
 }

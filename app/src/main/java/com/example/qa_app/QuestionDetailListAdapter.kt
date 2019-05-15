@@ -3,17 +3,12 @@ package com.example.qa_app
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.ToggleButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 class QuestionDetailListAdapter(context: Context, private val question: Question) : BaseAdapter() {
     companion object {
@@ -21,7 +16,7 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
         private val TYPE_ANSWER = 1
     }
 
-    var layoutInflater: LayoutInflater ?= null
+    var layoutInflater: LayoutInflater? = null
 
     init {
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -70,29 +65,6 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
                 val image = BitmapFactory.decodeByteArray(bytes, 0, bytes.size).copy(Bitmap.Config.ARGB_8888, true)
                 val imageViewQuestionDetail = convertView.findViewById<View>(R.id.imageViewQuestionDetail) as ImageView
                 imageViewQuestionDetail.setImageBitmap(image)
-            }
-
-            val toggleButtonFav = convertView.findViewById<View>(R.id.toggleButtonFav) as ToggleButton
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser == null) {
-                toggleButtonFav.visibility = View.INVISIBLE
-            } else { //TODO(if favorite -> star, not favorite -> star_border)
-                //　わからんこと：　favoriteRefに登録されているかを確認する方法
-                // こう言うValueを持つparent を探す方法
-                toggleButtonFav.visibility = View.VISIBLE
-                val favoriteRef = FirebaseDatabase.getInstance().reference.child(FavoritePATH).child(currentUser.uid).child(question.questionUid)
-                val data = HashMap<String, String>()
-                data["genre"] = question.genre.toString()
-
-                toggleButtonFav.setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) {
-                        toggleButtonFav.setBackgroundResource(R.drawable.ic_star_24dp)
-                        favoriteRef.setValue(data)
-                    } else {
-                        toggleButtonFav.setBackgroundResource(R.drawable.ic_star_border_24dp)
-                        favoriteRef.removeValue()
-                    }
-                }
             }
 
         } else if (getItemViewType(position) == TYPE_ANSWER) {
