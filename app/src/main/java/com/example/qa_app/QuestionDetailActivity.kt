@@ -60,9 +60,9 @@ class QuestionDetailActivity : AppCompatActivity() {
         override fun onDataChange(p0: DataSnapshot) {
             val favoriteMap = p0.value as Map<*, *>?
 
-            Log.d("value", "favoriteMap: $favoriteMap")
-            Log.d("value", "favoriteMap?.keys: ${favoriteMap?.keys}")
-            Log.d("value", "questionUid: ${question.questionUid}")
+//            Log.d("value", "favoriteMap: $favoriteMap")
+//            Log.d("value", "favoriteMap?.keys: ${favoriteMap?.keys}")
+//            Log.d("value", "questionUid: ${question.questionUid}")
 
             toggleButtonFav.visibility = View.VISIBLE
             val favoriteRef = FirebaseDatabase.getInstance().reference

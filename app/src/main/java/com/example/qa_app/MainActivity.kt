@@ -9,11 +9,8 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Base64
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.View.INVISIBLE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -24,12 +21,11 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var genre = 0
-
     private lateinit var databaseReference: DatabaseReference
     private lateinit var questionArrayList: ArrayList<Question>
     private lateinit var questionListAdapter: QuestionListAdapter
 
+    private var genre = 0
     private var genreRef: DatabaseReference ?= null
 
     private var currentUser: FirebaseUser? = null
