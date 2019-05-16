@@ -7,8 +7,11 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_favorite"
-        tools:context=".FavoriteActivity" android:padding="16dp">
+        tools:context=".FavoriteActivity"
+        android:padding="16dp">
     <ListView
+            android:id="@+id/listViewFav"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/listView" android:padding="16dp"/>
+            android:layout_height="match_parent"
+            android:padding="16dp"/>
 </RelativeLayout>
