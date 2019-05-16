@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -146,12 +147,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
 
         // 1:趣味を既定の選択とする
-        if(genre == 0) {
+        if (genre == 0) {
             onNavigationItemSelected(navigationView.menu.getItem(0))
         }
 
         currentUser = FirebaseAuth.getInstance().currentUser
-        navigationView.menu.findItem(R.id.nav_favorite).isVisible = (currentUser != null)
+        val navItemFavorite = navigationView.menu.findItem(R.id.nav_favorite)
+        navItemFavorite.isVisible = (currentUser != null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -175,6 +177,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
+//            R.id.nav_all -> {
+//                toolbar.title = "すべて"
+//                genre = 0
+//            }
             R.id.nav_hobby -> {
                 toolbar.title = "趣味"
                 genre = 1
@@ -192,7 +198,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 genre = 4
             }
             R.id.nav_favorite -> {
-
+                val intent = Intent(this, FavoriteActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -208,6 +215,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (genreRef != null) { // 前に選択されてたジャンルを削除
             genreRef!!.removeEventListener(childEventLister)
         }
+//        genreRef =
+//            if (genre == 0) {
+//                databaseReference.child(ContentsPATH)
+//            } else {
+//                databaseReference.child(ContentsPATH).child(genre.toString())
+//            }
         genreRef = databaseReference.child(ContentsPATH).child(genre.toString())
         genreRef!!.addChildEventListener(childEventLister)
 

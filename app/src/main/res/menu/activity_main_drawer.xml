@@ -2,11 +2,12 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group>
+        <!--<item android:title="すべて" android:id="@+id/nav_all"/>-->
         <item android:title="趣味" android:id="@+id/nav_hobby"/>
         <item android:title="生活" android:id="@+id/nav_life"/>
         <item android:title="健康" android:id="@+id/nav_health"/>
         <item android:title="コンピュータ" android:id="@+id/nav_computer"/>
-        <item android:title="" android:id="@+id/nav_nothing"/>
+        <item android:title="" android:id="@+id/nav_nothing" android:enabled="false"/>
         <item android:title="お気に入り質問一覧" android:id="@+id/nav_favorite"/>
     </group>
 </menu>
