@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_question_detail.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.content_main.listView
+import kotlinx.android.synthetic.main.content_questiondetail.*
 
 class QuestionDetailActivity : AppCompatActivity() {
 
@@ -17,6 +19,49 @@ class QuestionDetailActivity : AppCompatActivity() {
     private lateinit var questionDetailListAdapter: QuestionDetailListAdapter
 
     private var currentUser: FirebaseUser? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_question_detail)
+
+        // extras idQuestion 的な
+        question = intent.extras!!.get(QuestionIntentKEY) as Question
+
+        title = question.title
+
+        fab.setOnClickListener {
+
+            if (currentUser == null) { // ログインしてない
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            } else { // ログインしてる
+                val intent = Intent(this, AnswerSendActivity::class.java)
+                intent.putExtra(QuestionIntentKEY, question)
+                startActivity(intent)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        val answerRef = databaseReference.child(ContentsPATH).child(question.questionUid).child(AnswersPATH)
+        answerRef.addChildEventListener(childEventListener)
+
+        currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val favoriteRef = databaseReference.child(FavoritePATH).child(currentUser!!.uid)
+            favoriteRef.addValueEventListener(valueEventListener)
+        }
+
+        // setting of listView
+        questionDetailListAdapter = QuestionDetailListAdapter(this, question)
+        listView.adapter = questionDetailListAdapter
+        questionDetailListAdapter.notifyDataSetChanged()
+
+        listView.isEnabled = false
+    }
 
     private val childEventListener = object : ChildEventListener {
         override fun onChildAdded(p0: DataSnapshot, p1: String?) { // question.answer.add(answer)
@@ -98,42 +143,4 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         }
     })
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_question_detail)
-
-        // extras idQuestion 的な
-        question = intent.extras!!.get(QuestionIntentKEY) as Question
-
-        title = question.title
-
-        val databaseReference = FirebaseDatabase.getInstance().reference
-        val answerRef = databaseReference.child(ContentsPATH).child(question.questionUid).child(AnswersPATH)
-        answerRef.addChildEventListener(childEventListener)
-
-        currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            val favoriteRef = databaseReference.child(FavoritePATH).child(currentUser!!.uid)
-            favoriteRef.addValueEventListener(valueEventListener)
-        }
-
-        // setting of listView
-
-        questionDetailListAdapter = QuestionDetailListAdapter(this, question)
-        listView.adapter = questionDetailListAdapter
-        questionDetailListAdapter.notifyDataSetChanged()
-
-        fab.setOnClickListener {
-
-            if (currentUser == null) { // ログインしてない
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            } else { // ログインしてる
-                val intent = Intent(this, AnswerSendActivity::class.java)
-                intent.putExtra(QuestionIntentKEY, question)
-                startActivity(intent)
-            }
-        }
-    }
 }
