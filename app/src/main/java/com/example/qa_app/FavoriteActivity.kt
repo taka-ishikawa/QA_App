@@ -28,8 +28,6 @@ class FavoriteActivity : AppCompatActivity() {
 
     private lateinit var favoriteRef: DatabaseReference
 
-    private var genre = "0"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
@@ -42,11 +40,6 @@ class FavoriteActivity : AppCompatActivity() {
 //        drawer_layout_fav.addDrawerListener(toggle)
 //        toggle.syncState()
 
-        // Firebase
-        databaseReference = FirebaseDatabase.getInstance().reference
-
-        currentUser = FirebaseAuth.getInstance().currentUser!!
-        favoriteRef = databaseReference.child(FavoritePATH).child(currentUser.uid)
 //        favoriteRef.addValueEventListener(valueEventListener)
 
         listViewFav.setOnItemClickListener { _, _, i, _ ->
@@ -59,6 +52,12 @@ class FavoriteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        // Firebase
+        databaseReference = FirebaseDatabase.getInstance().reference
+
+        currentUser = FirebaseAuth.getInstance().currentUser!!
+        favoriteRef = databaseReference.child(FavoritePATH).child(currentUser.uid)
 
         // setting of listView
         favoriteQuestionListAdapter = FavoriteQuestionListAdapter(this)
@@ -77,7 +76,7 @@ class FavoriteActivity : AppCompatActivity() {
             Log.d("dataSnapshot.key", "FavoriteActivity; Child: ${p0.key}")
             val map = p0.value as Map<String, String>
             Log.d("dataSnapshot.value", "FavoriteActivity; Child: ${map.values}")
-            genre = map["genre"] ?: ""
+            val genre = map["genre"] ?: ""
             Log.d("dataSnapshot.genre", "FavoriteActivity; Child $genre")
 
             val questionRef = databaseReference.child(ContentsPATH).child(genre).child(p0.key.toString())
@@ -137,37 +136,38 @@ class FavoriteActivity : AppCompatActivity() {
 
         override fun onDataChange(p0: DataSnapshot) {
             Log.d("dataSnapshot.key", "FavoriteActivity; Value: ${p0.value}")
-//            val map = p0.value as Map<String, String>?
-//            Log.d("dataSnapshot.key", "FavoriteActivity; Value: $map")
-            val map = p0.value as Map<String, String>
-            val title = map["title"] ?: ""
-            val body = map["body"] ?: ""
-            val userName = map["userName"] ?: ""
-            val uid = map["uid"] ?: ""
-            val imageString = map["image"] ?: ""
-            val bytes =
-                if (imageString.isNotEmpty()) {
-                    Base64.decode(imageString, Base64.DEFAULT)
-                } else {
-                    byteArrayOf()
+            if (p0.value != null) {
+                val map = p0.value as Map<String, String>
+                Log.d("dataSnapshot.key", "FavoriteActivity; Value: $map")
+                val title = map["title"] ?: ""
+                val body = map["body"] ?: ""
+                val userName = map["userName"] ?: ""
+                val uid = map["uid"] ?: ""
+                val genre = map["genre"] ?: ""
+                val imageString = map["image"] ?: ""
+                val bytes =
+                    if (imageString.isNotEmpty()) {
+                        Base64.decode(imageString, Base64.DEFAULT)
+                    } else {
+                        byteArrayOf()
+                    }
+
+                val answerArrayList = ArrayList<Answer>()
+                val answerMap = map["answers"] as Map<String, String>?
+                if (answerMap != null) {
+                    for (key in answerMap.keys) { // keys: "answers". e.g. key = answer1: body1;name1;uid1
+                        val temp = answerMap[key] as Map<String, String>
+                        val answerBody = temp["body"] ?: ""
+                        val answerUserName = temp["userName"] ?: ""
+                        val answerUid = temp["uid"] ?: ""
+                        val answer = Answer(answerBody, answerUserName, answerUid, key)
+                        answerArrayList.add(answer)
+                    }
                 }
 
-            val answerArrayList = ArrayList<Answer>()
-            val answerMap = map["answers"] as Map<String, String>?
-            if (answerMap != null) {
-                for (key in answerMap.keys) { // keys: "answers". e.g. key = answer1: body1;name1;uid1
-                    val temp = answerMap[key] as Map<String, String>
-                    val answerBody = temp["body"] ?: ""
-                    val answerUserName = temp["userName"] ?: ""
-                    val answerUid = temp["uid"] ?: ""
-                    val answer = Answer(answerBody, answerUserName, answerUid, key)
-                    answerArrayList.add(answer)
-                }
-            }
-
-            val question = Question(title, body, userName, uid, p0.key ?: "", genre.toInt(), bytes, answerArrayList)
-            favoriteQuestionArrayList.add(question)
-            favoriteQuestionListAdapter.notifyDataSetChanged()
+                val question = Question(title, body, userName, uid, p0.key ?: "", genre.toInt(), bytes, answerArrayList)
+                favoriteQuestionArrayList.add(question)
+                favoriteQuestionListAdapter.notifyDataSetChanged()
 
 //
 //            if (map != null) {
@@ -217,6 +217,7 @@ class FavoriteActivity : AppCompatActivity() {
 //                    favoriteQuestionListAdapter.notifyDataSetChanged()
 //                }
 //            }
+            }
         }
 
         override fun onCancelled(p0: DatabaseError) {

@@ -100,6 +100,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
             }
 
             data["title"] = titleQuestion
+            data["genre"] = genre.toString()
             data["body"] = body
 
             // get name from Preference
