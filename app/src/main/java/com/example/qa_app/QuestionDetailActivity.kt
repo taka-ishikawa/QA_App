@@ -9,9 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_question_detail.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.listView
-import kotlinx.android.synthetic.main.content_questiondetail.*
 
 class QuestionDetailActivity : AppCompatActivity() {
 
@@ -105,10 +103,6 @@ class QuestionDetailActivity : AppCompatActivity() {
         override fun onDataChange(p0: DataSnapshot) {
             val favoriteMap = p0.value as Map<*, *>?
 
-//            Log.d("value", "favoriteMap: $favoriteMap")
-//            Log.d("value", "favoriteMap?.keys: ${favoriteMap?.keys}")
-//            Log.d("value", "questionUid: ${question.questionUid}")
-
             toggleButtonFav.visibility = View.VISIBLE
             val favoriteRef = FirebaseDatabase.getInstance().reference
                 .child(FavoritePATH).child(currentUser!!.uid).child(question.questionUid)
@@ -118,11 +112,6 @@ class QuestionDetailActivity : AppCompatActivity() {
             } else {
                 toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_on)
             }
-//            if (favoriteMap?.keys?.contains(question.questionUid)) { // favorite
-//                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_on)
-//            } else { // NOT favorite
-//                toggleButtonFav.setBackgroundResource(android.R.drawable.btn_star_big_off)
-//            }
 
             val data = HashMap<String, String>()
             data["genre"] = question.genre.toString()

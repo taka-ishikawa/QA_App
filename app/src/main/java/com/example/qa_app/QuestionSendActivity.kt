@@ -123,12 +123,6 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
 
             // send question: register genre/ newTitle/ newBody/ idNewImage with Firebase
             genreRef.push().setValue(data, this)
-//                data:
-//                data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
-//                data["title"] = titleQuestion
-//                data["body"] = body
-//                data["userName"] = userName
-//                data["image"] = bitmapString
             progressBar.visibility = View.INVISIBLE
         }
     }

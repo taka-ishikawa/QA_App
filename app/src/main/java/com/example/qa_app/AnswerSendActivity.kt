@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -44,7 +45,7 @@ class AnswerSendActivity : AppCompatActivity(), DatabaseReference.CompletionList
         val answer= editTextBody.text.toString()
         data["body"] = answer
         if (answer.isEmpty()) {
-            Snackbar.make(v!!, "回答を入力してください", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(v, "回答を入力してください", Snackbar.LENGTH_LONG).show()
             return
         }
         // Preferenceから名前を取る

@@ -76,7 +76,7 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
             textViewBody.text = question.answers[position - 1].body // ? position - 1
 
             val textViewUserName = convertView.findViewById<View>(R.id.textViewUserName) as TextView
-            textViewUserName.text = question.userName
+            textViewUserName.text = question.answers[position -1].userName
         }
         return convertView!!
     }

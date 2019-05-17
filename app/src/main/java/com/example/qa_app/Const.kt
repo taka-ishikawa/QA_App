@@ -7,4 +7,3 @@ const val FavoritePATH = "favorite"  // Firebaseにfavしているquestionを保
 const val UserNameKEY = "userName"      // Preferenceに表示名を保存する時のキー
 const val GenreIntentKEY = "genre"      // intent key for genre
 const val QuestionIntentKEY = "question"// intent key for question
-//const val FAVORITE = 1            // favStatus

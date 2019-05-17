@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Base64
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
@@ -30,73 +29,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var genreRef: DatabaseReference ?= null
 
     private var currentUser: FirebaseUser? = null
-
-    private val childEventLister = object : ChildEventListener {
-        override fun onChildAdded(p0: DataSnapshot, p1: String?) { // when question added
-            Log.d("dataSnapshot", p0.key)
-            val map = p0.value as Map<String, String>
-            val title = map["title"] ?: ""
-            val body = map["body"] ?: ""
-            val userName = map["userName"] ?: ""
-            val uid = map["uid"] ?: ""
-            val imageString = map["image"] ?: ""
-            val bytes =
-                if (imageString.isNotEmpty()) {
-                    Base64.decode(imageString, Base64.DEFAULT)
-                } else {
-                    byteArrayOf()
-                }
-
-            val answerArrayList = ArrayList<Answer>()
-            val answerMap = map["answers"] as Map<String, String>?
-            if (answerMap != null) {
-                for (key in answerMap.keys) { // keys: "answers". e.g. key = answer1: body1;name1;uid1
-                    val temp = answerMap[key] as Map<String, String>
-                    val answerBody = temp["body"] ?: ""
-                    val answerUserName = temp["userName"] ?: ""
-                    val answerUid = temp["uid"] ?: ""
-                    val answer = Answer(answerBody, answerUserName, answerUid, key)
-                    answerArrayList.add(answer)
-                }
-            }
-
-            val question = Question(title, body, userName, uid, p0.key ?: "", genre, bytes, answerArrayList)
-            questionArrayList.add(question)
-            questionListAdapter.notifyDataSetChanged()
-        }
-
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) { // when question changed (answer added)
-            val map = p0.value as Map<String,String>
-
-            // find question changed
-            for (question in questionArrayList) {
-                if (p0.key.equals(question.questionUid)) { // このアプリで変更がある可能性があるのは回答(Answer)のみ
-                    question.answers.clear()
-                    val answerMap = map["answers"] as Map<String, String>?
-                    if (answerMap != null) {
-                        for (key in answerMap.keys) {
-                            val temp = answerMap[key] as Map<String, String>
-                            val answerBody = temp["body"] ?: ""
-                            val answerUserName = temp["userName"] ?: ""
-                            val answerUid = temp["uid"] ?: ""
-                            val answer = Answer(answerBody, answerUserName, answerUid, key)
-                            question.answers.add(answer)
-                        }
-                        questionListAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-        }
-
-        override fun onCancelled(p0: DatabaseError) {
-        }
-
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot) {
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -213,15 +145,76 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (genreRef != null) { // 前に選択されてたジャンルを削除
             genreRef!!.removeEventListener(childEventLister)
         }
-//        genreRef =
-//            if (genre == 0) {
-//                databaseReference.child(ContentsPATH)
-//            } else {
-//                databaseReference.child(ContentsPATH).child(genre.toString())
-//            }
         genreRef = databaseReference.child(ContentsPATH).child(genre.toString())
         genreRef!!.addChildEventListener(childEventLister)
 
         return true
     }
+
+    private val childEventLister = object : ChildEventListener {
+        override fun onChildAdded(p0: DataSnapshot, p1: String?) { // when question added
+            val map = p0.value as Map<String, String>
+            val title = map["title"] ?: ""
+            val body = map["body"] ?: ""
+            val userName = map["userName"] ?: ""
+            val uid = map["uid"] ?: ""
+            val imageString = map["image"] ?: ""
+            val bytes =
+                if (imageString.isNotEmpty()) {
+                    Base64.decode(imageString, Base64.DEFAULT)
+                } else {
+                    byteArrayOf()
+                }
+
+            val answerArrayList = ArrayList<Answer>()
+            val answerMap = map["answers"] as Map<String, String>?
+            if (answerMap != null) {
+                for (key in answerMap.keys) { // keys: "answers". e.g. key = answer1: body1;name1;uid1
+                    val temp = answerMap[key] as Map<String, String>
+                    val answerBody = temp["body"] ?: ""
+                    val answerUserName = temp["userName"] ?: ""
+                    val answerUid = temp["uid"] ?: ""
+                    val answer = Answer(answerBody, answerUserName, answerUid, key)
+                    answerArrayList.add(answer)
+                }
+            }
+
+            val question = Question(title, body, userName, uid, p0.key ?: "", genre, bytes, answerArrayList)
+            questionArrayList.add(question)
+            questionListAdapter.notifyDataSetChanged()
+        }
+
+        override fun onChildChanged(p0: DataSnapshot, p1: String?) { // when question changed (answer added)
+            val map = p0.value as Map<String,String>
+
+            // find question changed
+            for (question in questionArrayList) {
+                if (p0.key.equals(question.questionUid)) { // このアプリで変更がある可能性があるのは回答(Answer)のみ
+                    question.answers.clear()
+                    val answerMap = map["answers"] as Map<String, String>?
+                    if (answerMap != null) {
+                        for (key in answerMap.keys) {
+                            val temp = answerMap[key] as Map<String, String>
+                            val answerBody = temp["body"] ?: ""
+                            val answerUserName = temp["userName"] ?: ""
+                            val answerUid = temp["uid"] ?: ""
+                            val answer = Answer(answerBody, answerUserName, answerUid, key)
+                            question.answers.add(answer)
+                        }
+                        questionListAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
+        override fun onCancelled(p0: DatabaseError) {
+        }
+
+        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+        }
+
+        override fun onChildRemoved(p0: DataSnapshot) {
+        }
+    }
+
 }

@@ -28,14 +28,14 @@ class SettingActivity : AppCompatActivity() {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
-            val User = FirebaseAuth.getInstance().currentUser
-            if (User == null) {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
                 Snackbar.make(it, "ログインしていません", Snackbar.LENGTH_LONG).show()
             } else {
                 // change userName on Firebase
                 val newUserName = editTextUserName.text.toString()
                 val dataBaseReference = FirebaseDatabase.getInstance().reference
-                val userRef = dataBaseReference.child(UsersPATH).child(User.uid)
+                val userRef = dataBaseReference.child(UsersPATH).child(currentUser.uid)
                 val data = HashMap<String, String>()
                 data["userName"] = newUserName
                 userRef.setValue(data)
@@ -43,7 +43,7 @@ class SettingActivity : AppCompatActivity() {
                 // change userName on Preference
                 val editor = sharedPreferences.edit()
                 editor.putString(UserNameKEY, newUserName)
-                editor.commit()
+                editor.apply()
 
                 Snackbar.make(it, "表示名を変更しました", Snackbar.LENGTH_LONG).show()
             }
@@ -54,7 +54,7 @@ class SettingActivity : AppCompatActivity() {
             FirebaseAuth.getInstance().signOut()
             val editor = sharedPreferences.edit()
             editor.putString(UserNameKEY, "")
-            editor.commit()
+            editor.apply()
 
             Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
 
